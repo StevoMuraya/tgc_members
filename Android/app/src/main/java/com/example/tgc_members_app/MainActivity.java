@@ -56,16 +56,16 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                Animation rotate  = AnimationUtils.loadAnimation(getBaseContext(),R.anim.blink);
+                Animation rotate  = AnimationUtils.loadAnimation(getBaseContext(),R.anim.rotate);
                 logo2.setVisibility(View.VISIBLE);
-                logo2.setAnimation(rotate);new CountDownTimer(1500, 4000) {
+                logo2.setAnimation(rotate);new CountDownTimer(2500, 4000) {
 
                     @Override
                     public void onTick(long millisUntilFinished) {
                     }
                     @Override
                     public void onFinish() {
-                        startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                        startActivity(new Intent(MainActivity.this, HomePageActivity.class));
                         finish();
                     }
 
