@@ -138,25 +138,6 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="8dp">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:fontFamily="casual"
-                        android:layout_margin="10dp"
-                        android:textColor="#000"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:text="+254"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,14 +156,14 @@
                             android:hint="Phone Number"
                             android:fontFamily="casual"
                             android:inputType="phone"
-                            android:maxLength="9"
+                            android:maxLength="10"
                             android:maxLines="1"
                             android:paddingLeft="20dp"
                             android:textColor="#000"
                             tools:layout_editor_absoluteX="8dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -270,7 +251,8 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="50dp"
                 android:text="Register"
-                android:background="@color/colorPrimaryDark"
+                android:id="@+id/bt_reg_register"
+                android:background="@drawable/button_accent"
                 android:textColor="@color/colorAccent"
                 android:elevation="15dp"
                 app:layout_constraintEnd_toEndOf="parent"

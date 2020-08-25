@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectionActivity">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="15dp"
+                    android:id="@+id/splash_logo_card"
+                    android:background="#FFF"
+                    android:alpha="1"
+                    app:cardBackgroundColor="#FFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:cardCornerRadius="50dp"
+                    app:layout_constraintVertical_bias="0.736">
+                    <ImageView
+                        android:id="@+id/splash_logo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:paddingRight="13dp"
+                        android:src="@drawable/logo" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/page_splash_name"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/page_splash_name2"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="cursive"
+                    android:gravity="center"
+                    android:text="Tigoni Baptist"
+                    android:textColor="#000"
+                    android:textSize="30sp" />
+                <TextView
+                    android:id="@+id/page_splash_name2"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:layout_alignParentBottom="true"
+                    android:fontFamily="cursive"
+                    android:gravity="center"
+                    android:text="Church"
+                    android:textColor="#000"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Already have an account?\nwelcome back"
+                android:layout_marginTop="80dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="italic"
+                android:textColor="#003D59"
+                android:gravity="center_horizontal"
+                android:fontFamily="casual"/>
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:id="@+id/bt_selection_login"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/button_primary"
+                android:elevation="11dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="italic"
+                android:text="Don't have an account?\nRegister now below!"
+                android:layout_marginTop="70dp"
+                android:textColor="#95341A"
+                android:gravity="center_horizontal"
+                android:fontFamily="casual"/>
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:layout_marginBottom="70dp"
+                android:id="@+id/bt_selection_register"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/button_accent"
+                android:elevation="11dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

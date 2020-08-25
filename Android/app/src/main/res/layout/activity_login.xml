@@ -90,7 +90,7 @@
                 android:fontFamily="casual"
                 android:gravity="center"
                 android:padding="30dp"
-                android:text="Fill out the form below to register"
+                android:text="Fill out the form below to login"
                 android:textColor="#000" />
 
             <androidx.cardview.widget.CardView
@@ -115,7 +115,7 @@
                     android:padding="3dp">
 
                     <EditText
-                        android:id="@+id/et_phone_register"
+                        android:id="@+id/et_phone_login"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="#FFF"
@@ -155,7 +155,7 @@
                     android:padding="3dp">
 
                     <EditText
-                        android:id="@+id/et_password_reg"
+                        android:id="@+id/et_password_login"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="#FFF"
@@ -175,6 +175,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:id="@+id/bt_log_login"
                 android:layout_marginBottom="20dp"
                 android:text="Login"
                 android:textColor="@color/colorPrimary"
