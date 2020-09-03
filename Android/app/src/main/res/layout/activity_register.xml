@@ -244,7 +244,6 @@
                         tools:layout_editor_absoluteX="8dp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
-
             <Button
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -254,10 +253,16 @@
                 android:id="@+id/bt_reg_register"
                 android:background="@drawable/button_accent"
                 android:textColor="@color/colorAccent"
-                android:elevation="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+                android:elevation="15dp" />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:layout_width="30dp"
+                android:layout_gravity="center"
+                android:id="@+id/reg_loading"
+                android:backgroundTint="#dedede"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="50dp"
+                android:layout_height="30dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

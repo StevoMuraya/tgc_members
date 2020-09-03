@@ -4,4 +4,11 @@
     <string name="title_home">Home</string>
     <string name="title_scan">Scan</string>
     <string name="title_account">Account</string>
+
+
+
+    <string name="account_selection">Select one of the following\n
+        1. If person has a phone number, select <b>first button</b>\n
+        2. If person has no phone number, select <b>second button</b>
+    </string>
 </resources>

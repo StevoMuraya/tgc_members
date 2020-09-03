@@ -5,13 +5,30 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -94,7 +111,8 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         }else{
-            Toast.makeText(this, "Good to go", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Good to go", Toast.LENGTH_SHORT).show();
+            //check_phone(name_z,phone_z,pass_z);
         }
     }
 
@@ -115,6 +133,108 @@ public class RegisterActivity extends AppCompatActivity {
         return conf.equals(conf_password.getText().toString());
     }
 
+    /*private void check_phone(final String name_z, final String phone_z, final String password_z){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, clsGlobal.CHECK_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //Log.d("respone_new",response.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.optString("success");
+                    String message = jsonObject.optString("message");
+                    JSONArray jsonArray = jsonObject.getJSONArray("login");
+
+                    if (success.equalsIgnoreCase("1")){
+                        new CountDownTimer(2500, 4000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+                            @Override
+                            public void onFinish() {
+                                register.setVisibility(View.VISIBLE);
+                                loading_screen.animate().alpha(0f).setDuration(500);
+                                loading.setVisibility(View.GONE);
+                                fname.setEnabled(true);
+                                lname.setEnabled(true);
+                                email.setEnabled(true);
+                                phone.setEnabled(true);
+                                county.setEnabled(true);
+                                pass.setEnabled(true);
+                                confirm.setEnabled(true);
+                                dublicateFound(UserRegistrationActivity.this).show();
+                            }
+
+                        }.start();
+                    }else{
+                        registerUser(fname_z,lname_z,email_z,phone_z,county_z,pass_z);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new CountDownTimer(2500, 4000) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                        }
+                        @Override
+                        public void onFinish() {
+                            register.setVisibility(View.VISIBLE);
+                            loading_screen.animate().alpha(0f).setDuration(500);
+                            loading.setVisibility(View.GONE);
+                            fname.setEnabled(true);
+                            lname.setEnabled(true);
+                            email.setEnabled(true);
+                            phone.setEnabled(true);
+                            pass.setEnabled(true);
+                            confirm.setEnabled(true);
+                            Toast.makeText(UserRegistrationActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserRegistrationActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }.start();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        new CountDownTimer(2500, 4000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+                            @Override
+                            public void onFinish() {
+                                register.setVisibility(View.VISIBLE);
+                                loading_screen.animate().alpha(0f).setDuration(500);
+                                loading.setVisibility(View.GONE);
+                                fname.setEnabled(true);
+                                lname.setEnabled(true);
+                                email.setEnabled(true);
+                                phone.setEnabled(true);
+                                pass.setEnabled(true);
+                                confirm.setEnabled(true);
+                                Toast.makeText(UserRegistrationActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserRegistrationActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }.start();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email",email_z);
+                params.put("phone",phone_z);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueus = Volley.newRequestQueue(this);
+        requestQueus.add(stringRequest);
+    }
+*/
 
     @Override
     public void onBackPressed() {

@@ -82,48 +82,100 @@
             </LinearLayout>
 
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Already have an account?\nwelcome back"
-                android:layout_marginTop="80dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="italic"
-                android:textColor="#003D59"
+                android:layout_height="match_parent"
+                android:id="@+id/select_action_1"
+                android:visibility="visible"
                 android:gravity="center_horizontal"
-                android:fontFamily="casual"/>
+                android:orientation="vertical">
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:id="@+id/bt_selection_login"
-                android:textColor="@color/colorAccent"
-                android:background="@drawable/button_primary"
-                android:elevation="11dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Already have an account?\nwelcome back"
+                    android:layout_marginTop="80dp"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="italic"
+                    android:textColor="#003D59"
+                    android:gravity="center_horizontal"
+                    android:fontFamily="casual"/>
 
-            <TextView
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:id="@+id/bt_selection_login"
+                    android:textColor="@color/colorAccent"
+                    android:background="@drawable/button_primary"
+                    android:elevation="11dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="italic"
+                    android:text="Don't have an account?\nRegister now below!"
+                    android:layout_marginTop="70dp"
+                    android:textColor="#95341A"
+                    android:gravity="center_horizontal"
+                    android:fontFamily="casual"/>
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Register"
+                    android:layout_marginBottom="70dp"
+                    android:id="@+id/bt_selection_register"
+                    android:textColor="@color/colorAccent"
+                    android:background="@drawable/button_accent"
+                    android:elevation="11dp"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="italic"
-                android:text="Don't have an account?\nRegister now below!"
-                android:layout_marginTop="70dp"
-                android:textColor="#95341A"
+                android:layout_height="match_parent"
+                android:id="@+id/select_action_2"
+                android:visibility="gone"
                 android:gravity="center_horizontal"
-                android:fontFamily="casual"/>
+                android:orientation="vertical">
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Register"
-                android:layout_marginBottom="70dp"
-                android:id="@+id/bt_selection_register"
-                android:textColor="@color/colorAccent"
-                android:background="@drawable/button_accent"
-                android:elevation="11dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/account_selection"
+                    android:layout_marginTop="80dp"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="italic"
+                    android:textColor="#000"
+                    android:gravity="center_horizontal"
+                    android:fontFamily="casual"/>
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="With Phone Number"
+                    android:id="@+id/bt_selection_adult"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/button_design_primary"
+                    android:elevation="11dp"/>
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Without Phone Number"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginBottom="70dp"
+                    android:id="@+id/bt_selection_child"
+                    android:textColor="#CB502F"
+                    android:background="@drawable/button_design_accent"
+                    android:elevation="11dp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

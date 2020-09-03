@@ -9,12 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] =='GET'){
 	require_once('config.php');
 
 	$CODE = $name.' '.$phone; 
-	$encrypted_password = password_hash($password, PASSWORD_BCRYPT);
-	$hashedQRCode = password_hash($CODE, PASSWORD_BCRYPT);
+	$encrypted_password = password_hash($password, PASSWORD_DEFAULT);
+	$hashedQRCode = password_hash($CODE, PASSWORD_DEFAULT);
 
-	echo $encrypted_password;
+	//echo $encrypted_password;
 
-	$sql = "INSERT INTO app_users(name,phone,password,date_time,qr_code) VALUES ('$name','$phone','$encrypted_password',now(),'$hashedQRCode')";
+	$sql = "INSERT INTO users(name,phone,password,date_time,qr_code) VALUES ('$name','$phone','$encrypted_password',now(),'$hashedQRCode')";
 	if (mysqli_query($db_handle,$sql)) {
 		echo "Successfully Registered";
 	}else{

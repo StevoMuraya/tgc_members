@@ -1,11 +1,8 @@
 <?php 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $phone      = filter_var($_GET['phone'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-        $password   = filter_var($_GET['password'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
 
         require_once('config.php');
-
-        $login = FALSE;
 
         $sql = "SELECT * FROM users WHERE phone = '$phone'";
         $response = mysqli_query($db_handle,$sql);  
@@ -17,17 +14,7 @@
 
             if (password_verify($password, $row['password']))
               {
-                /* The password is correct. */
-                $login = TRUE;
 
-                $index['user_id'] = $row['user_id'];
-                $index['name'] = $row['name'];
-                $index['phone'] = $row['phone'];
-                $index['password'] = $row['password'];
-                $index['date_time'] = $row['date_time'];
-                $index['qr_code'] = $row['qr_code'];
-
-                array_push($result['login'], $index);
                 $result['success'] = "1";
                 $result['message'] = "success";
                 echo json_encode($result);
