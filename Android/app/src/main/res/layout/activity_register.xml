@@ -252,7 +252,7 @@
                 android:text="Register"
                 android:id="@+id/bt_reg_register"
                 android:background="@drawable/button_accent"
-                android:textColor="@color/colorAccent"
+                android:textColor="#FFF"
                 android:elevation="15dp" />
 
             <androidx.core.widget.ContentLoadingProgressBar

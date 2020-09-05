@@ -1,13 +1,15 @@
 package com.example.tgc_members_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -133,11 +135,11 @@ public class RegisterActivity extends AppCompatActivity {
         return conf.equals(conf_password.getText().toString());
     }
 
-    /*private void check_phone(final String name_z, final String phone_z, final String password_z){
+    private void check_phone(final String name_z, final String phone_z, final String password_z){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, clsGlobal.CHECK_USER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.d("respone_new",response.toString());
+                //Log.d("response_new",response.toString());
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String success = jsonObject.optString("success");
@@ -162,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 county.setEnabled(true);
                                 pass.setEnabled(true);
                                 confirm.setEnabled(true);
-                                dublicateFound(UserRegistrationActivity.this).show();
+                                duplicateFound(UserRegistrationActivity.this).show();
                             }
 
                         }.start();
@@ -234,7 +236,33 @@ public class RegisterActivity extends AppCompatActivity {
         RequestQueue requestQueus = Volley.newRequestQueue(this);
         requestQueus.add(stringRequest);
     }
-*/
+
+
+    public AlertDialog.Builder duplicateFound(Context c) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setMessage("The phone number you used to register already exists in the system,\n" +
+                "Please try again using a different phone number");
+        builder.setTitle("Duplicate Found");
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                phone.setText("");
+                password.setText("");
+                conf_password.setText("");
+            }
+        });
+
+        builder.setNegativeButton("Login", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onBackPressed();
+            }
+        });
+        return builder;
+    }
 
     @Override
     public void onBackPressed() {

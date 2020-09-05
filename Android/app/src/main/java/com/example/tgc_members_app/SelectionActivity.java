@@ -68,6 +68,7 @@ public class SelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SelectionActivity.this, RegisterActivity.class));
+                finish();
             }
         });
 
