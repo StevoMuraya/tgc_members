@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -265,5 +264,12 @@
                 android:layout_height="30dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:alpha=".3"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#000"/>
 
 </RelativeLayout>

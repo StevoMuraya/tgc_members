@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         }else{
             //Toast.makeText(this, "Good to go", Toast.LENGTH_SHORT).show();
-            //check_phone(name_z,phone_z,pass_z);
+            check_phone(name_z,phone_z,pass_z);
         }
     }
 
