@@ -179,8 +179,18 @@
                 android:layout_marginBottom="20dp"
                 android:text="Login"
                 android:textColor="@color/colorPrimary"
-                android:background="@drawable/button_design"
+                android:background="@drawable/button_design_primary"
                 android:elevation="11dp"/>
+
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:id="@+id/loading_log"
+                android:backgroundTint="#dedede"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_height="30dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -197,4 +207,12 @@
                 android:text="Register Now!"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:alpha=".3"
+        android:id="@+id/loading_screen_login"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#000"/>
 </RelativeLayout>

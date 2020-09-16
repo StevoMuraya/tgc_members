@@ -254,10 +254,11 @@
                 android:textColor="#FFF"
                 android:elevation="15dp" />
 
-            <androidx.core.widget.ContentLoadingProgressBar
+            <ProgressBar
                 android:layout_width="30dp"
                 android:layout_gravity="center"
-                android:id="@+id/reg_loading"
+                android:visibility="gone"
+                android:id="@+id/loading_reg"
                 android:backgroundTint="#dedede"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="50dp"
@@ -268,6 +269,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:alpha=".3"
+        android:id="@+id/loading_screen_reg"
         android:visibility="gone"
         android:layout_height="match_parent"
         android:background="#000"/>

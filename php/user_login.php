@@ -1,14 +1,14 @@
-<?php 
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $phone      = filter_var($_GET['phone'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-        $password   = filter_var($_GET['password'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $phone      = filter_var($_POST['phone'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+        $password   = filter_var($_POST['password'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
 
         require_once('config.php');
 
         $login = FALSE;
 
         $sql = "SELECT * FROM users WHERE phone = '$phone'";
-        $response = mysqli_query($db_handle,$sql);  
+        $response = mysqli_query($db_handle,$sql);
         $result = array();
         $result['login'] = array();
 
@@ -23,7 +23,6 @@
                 $index['user_id'] = $row['user_id'];
                 $index['name'] = $row['name'];
                 $index['phone'] = $row['phone'];
-                $index['password'] = $row['password'];
                 $index['date_time'] = $row['date_time'];
                 $index['qr_code'] = $row['qr_code'];
 

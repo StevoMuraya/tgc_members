@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tgc_members_app</string>
+    <string name="app_name">TBC Register App</string>
     <string name="title_activity_home_page">HomePageActivity</string>
     <string name="title_home">Home</string>
     <string name="title_scan">Scan</string>

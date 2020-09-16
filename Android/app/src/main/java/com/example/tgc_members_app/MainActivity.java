@@ -7,7 +7,9 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -18,16 +20,39 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private TextView name,name2;
     private CardView logo;
     private ImageView logo2;
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String shared_user_id,shared_name,shared_phone,shared_date_time, shared_qr_code;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pref = getSharedPreferences("uza.conf", Context.MODE_PRIVATE);
+        editor = pref.edit();
+
+        shared_user_id = pref.getString("shared_user_id","");
+        clsGlobal.shared_user_id = shared_user_id;
+
+        shared_name = pref.getString("shared_name","");
+        clsGlobal.shared_name = shared_name;
+
+        shared_phone = pref.getString("shared_phone","");
+        clsGlobal.shared_phone = shared_phone;
+
+        shared_date_time = pref.getString("shared_date_time","");
+        clsGlobal.shared_date_time = shared_date_time;
+
+        shared_qr_code = pref.getString("shared_qr_code","");
+        clsGlobal.shared_qr_code = shared_qr_code;
 
         try {
             if (android.os.Build.VERSION.SDK_INT >= 21) {
@@ -65,8 +90,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFinish() {
-                        startActivity(new Intent(MainActivity.this, SelectionActivity.class));
-                        finish();
+
+                        if (!(shared_user_id.equals(""))){
+                            startActivity(new Intent(MainActivity.this, HomePageActivity.class));
+                            finish();
+                        }else{
+                            startActivity(new Intent(MainActivity.this, SelectionActivity.class));
+                            finish();
+                        }
                     }
 
                 }.start();

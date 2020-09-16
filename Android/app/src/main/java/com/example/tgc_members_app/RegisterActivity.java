@@ -7,14 +7,22 @@ import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,10 +41,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText name, phone, password, conf_password;
     private Button reg;
+    private ProgressBar loading;
+    private RelativeLayout loading_screen;
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private String shared_user_id,shared_name,shared_phone,shared_date_time, shared_qr_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +70,33 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+
+        pref = getSharedPreferences("uza.conf", Context.MODE_PRIVATE);
+        editor = pref.edit();
+
+        shared_user_id = pref.getString("shared_user_id","");
+        clsGlobal.shared_user_id = shared_user_id;
+
+        shared_name = pref.getString("shared_name","");
+        clsGlobal.shared_name = shared_name;
+
+        shared_phone = pref.getString("shared_phone","");
+        clsGlobal.shared_phone = shared_phone;
+
+        shared_date_time = pref.getString("shared_date_time","");
+        clsGlobal.shared_date_time = shared_date_time;
+
+        shared_qr_code = pref.getString("shared_qr_code","");
+        clsGlobal.shared_qr_code = shared_qr_code;
+
         name = findViewById(R.id.et_name_reg);
         phone = findViewById(R.id.et_phone_register);
         password = findViewById(R.id.et_password_reg);
         conf_password = findViewById(R.id.et_confirm_password_reg);
+
+        loading = findViewById(R.id.loading_reg);
+        loading_screen = findViewById(R.id.loading_screen_reg);
 
         reg = findViewById(R.id.bt_reg_register);
         reg.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +154,18 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         }else{
-            //Toast.makeText(this, "Good to go", Toast.LENGTH_SHORT).show();
+            Animation fade_in = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_in);
+
+            name.setEnabled(false);
+            phone.setEnabled(false);
+            password.setEnabled(false);
+            conf_password.setEnabled(false);
+            reg.setVisibility(View.GONE);
+            loading_screen.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.VISIBLE);
+            loading.setAnimation(fade_in);
+            loading_screen.setAnimation(fade_in);
+
             check_phone(name_z,phone_z,pass_z);
         }
     }
@@ -132,14 +184,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private boolean confirmPass(String conf) {
         //TODO: Replace this with your own logic
-        return conf.equals(conf_password.getText().toString());
+        return conf.equals(password.getText().toString());
     }
 
     private void check_phone(final String name_z, final String phone_z, final String password_z){
+
+        Animation fade_in = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_in);
+        final Animation fade_out = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_out);
+
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, clsGlobal.CHECK_USER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //Log.d("response_new",response.toString());
+                Log.e("response_new",response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String success = jsonObject.optString("success");
@@ -147,57 +204,129 @@ public class RegisterActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObject.getJSONArray("login");
 
                     if (success.equalsIgnoreCase("1")){
-                        new CountDownTimer(2500, 4000) {
+                        new CountDownTimer(2000, 4000) {
 
                             @Override
                             public void onTick(long millisUntilFinished) {
                             }
                             @Override
                             public void onFinish() {
-                                register.setVisibility(View.VISIBLE);
-                                loading_screen.animate().alpha(0f).setDuration(500);
+                                reg.setVisibility(View.VISIBLE);
+                                loading_screen.setVisibility(View.GONE);
                                 loading.setVisibility(View.GONE);
-                                fname.setEnabled(true);
-                                lname.setEnabled(true);
-                                email.setEnabled(true);
+                                loading_screen.setAnimation(fade_out);
+                                name.setEnabled(true);
                                 phone.setEnabled(true);
-                                county.setEnabled(true);
-                                pass.setEnabled(true);
-                                confirm.setEnabled(true);
-                                duplicateFound(UserRegistrationActivity.this).show();
+                                password.setEnabled(true);
+                                conf_password.setEnabled(true);
+
+                                duplicateFound(RegisterActivity.this).show();
                             }
 
                         }.start();
                     }else{
-                        registerUser(fname_z,lname_z,email_z,phone_z,county_z,pass_z);
+                        registerUser(name_z, phone_z, password_z);
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    new CountDownTimer(2500, 4000) {
+                    new CountDownTimer(2000, 4000) {
 
                         @Override
                         public void onTick(long millisUntilFinished) {
                         }
                         @Override
                         public void onFinish() {
-                            register.setVisibility(View.VISIBLE);
-                            loading_screen.animate().alpha(0f).setDuration(500);
+                            reg.setVisibility(View.VISIBLE);
+                            loading_screen.setVisibility(View.GONE);
                             loading.setVisibility(View.GONE);
-                            fname.setEnabled(true);
-                            lname.setEnabled(true);
-                            email.setEnabled(true);
+                            loading_screen.setAnimation(fade_out);
+                            name.setEnabled(true);
                             phone.setEnabled(true);
-                            pass.setEnabled(true);
-                            confirm.setEnabled(true);
-                            Toast.makeText(UserRegistrationActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(UserRegistrationActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            password.setEnabled(true);
+                            conf_password.setEnabled(true);
+                            Toast.makeText(RegisterActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
                         }
 
                     }.start();
                 }
             }
         },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        new CountDownTimer(2000, 4000) {
+
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+                            @Override
+                            public void onFinish() {
+                                reg.setVisibility(View.VISIBLE);
+                                loading_screen.setVisibility(View.GONE);
+                                loading.setVisibility(View.GONE);
+                                loading_screen.setAnimation(fade_out);
+                                name.setEnabled(true);
+                                phone.setEnabled(true);
+                                password.setEnabled(true);
+                                conf_password.setEnabled(true);
+                                Toast.makeText(RegisterActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }.start();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("phone",phone_z);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueus = Volley.newRequestQueue(this);
+        requestQueus.add(stringRequest);
+    }
+
+
+
+
+    private void registerUser(final String name_x, final String phone_x, final String password_x){
+        Animation fade_in = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_in);
+        final Animation fade_out = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_out);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, clsGlobal.REGISTER_USER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        if (response.equalsIgnoreCase("Successfully Registered")){
+                            user_login(phone_x,password_x);
+                            Toast.makeText(RegisterActivity.this, "User Registered", Toast.LENGTH_SHORT).show();
+                        }else{
+                            new CountDownTimer(2500, 4000) {
+
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                @Override
+                                public void onFinish() {
+                                    reg.setVisibility(View.VISIBLE);
+                                    loading_screen.setVisibility(View.GONE);
+                                    loading.setVisibility(View.GONE);
+                                    loading_screen.setAnimation(fade_out);
+                                    name.setEnabled(true);
+                                    phone.setEnabled(true);
+                                    password.setEnabled(true);
+                                    conf_password.setEnabled(true);
+                                    Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
+                                }
+
+                            }.start();
+                        }
+                    }
+                },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -208,27 +337,162 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             @Override
                             public void onFinish() {
-                                register.setVisibility(View.VISIBLE);
-                                loading_screen.animate().alpha(0f).setDuration(500);
+                                reg.setVisibility(View.VISIBLE);
+                                loading_screen.setVisibility(View.GONE);
                                 loading.setVisibility(View.GONE);
-                                fname.setEnabled(true);
-                                lname.setEnabled(true);
-                                email.setEnabled(true);
+                                loading_screen.setAnimation(fade_out);
+                                name.setEnabled(true);
                                 phone.setEnabled(true);
-                                pass.setEnabled(true);
-                                confirm.setEnabled(true);
-                                Toast.makeText(UserRegistrationActivity.this, "Failed to check details", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(UserRegistrationActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                                password.setEnabled(true);
+                                conf_password.setEnabled(true);
+                                Toast.makeText(RegisterActivity.this, "Failed to send details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Please try again later", Toast.LENGTH_SHORT).show();
                             }
 
                         }.start();
                     }
                 }){
             @Override
+            protected Map<String, String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("name",name_x);
+                params.put("phone",phone_x);
+                params.put("password",password_x);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(RegisterActivity.this);
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void user_login(final String phone_z, final String pass_z){
+        Animation fade_in = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_in);
+        final Animation fade_out = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_out);
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, clsGlobal.LOGIN_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("respone_new",response.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+                    JSONArray jsonArray = jsonObject.getJSONArray("login");
+
+                    if (success.equals("1")){
+                        for (int i = 0;i<jsonArray.length();i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String user_id_x = object.getString("user_id").trim();
+                            String name_x = object.getString("name").trim();
+                            String phone_x = object.getString("phone").trim();
+                            String date_x = object.getString("date_time").trim();
+                            String code_x = object.getString("qr_code").trim();
+
+                            editor.putString("shared_user_id",user_id_x);
+                            editor.putString("shared_name",name_x);
+                            editor.putString("shared_phone", phone_x);
+                            editor.putString("shared_date_time", date_x);
+                            editor.putString("shared_qr_code", code_x);
+                            editor.apply();
+
+                            new CountDownTimer(2500, 4000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                @Override
+                                public void onFinish() {
+                                    reg.setVisibility(View.VISIBLE);
+                                    loading_screen.setVisibility(View.GONE);
+                                    loading.setVisibility(View.GONE);
+                                    loading_screen.setAnimation(fade_out);
+                                    name.setEnabled(true);
+                                    phone.setEnabled(true);
+                                    password.setEnabled(true);
+                                    conf_password.setEnabled(true);
+                                    Toast.makeText(RegisterActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+
+
+                                    startActivity(new Intent(RegisterActivity.this,HomePageActivity.class));
+                                    finish();
+                                }
+                            }.start();
+                        }
+                    }else {
+                        new CountDownTimer(2500, 4000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+                            @Override
+                            public void onFinish() {
+                                reg.setVisibility(View.VISIBLE);
+                                loading_screen.setVisibility(View.GONE);
+                                loading.setVisibility(View.GONE);
+                                loading_screen.setAnimation(fade_out);
+                                name.setEnabled(true);
+                                phone.setEnabled(true);
+                                password.setEnabled(true);
+                                conf_password.setEnabled(true);
+                                Toast.makeText(RegisterActivity.this, "Incorrect details used", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }.start();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    new CountDownTimer(2500, 4000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                        }
+                        @Override
+                        public void onFinish() {
+                            reg.setVisibility(View.VISIBLE);
+                            loading_screen.setVisibility(View.GONE);
+                            loading.setVisibility(View.GONE);
+                            loading_screen.setAnimation(fade_out);
+                            name.setEnabled(true);
+                            phone.setEnabled(true);
+                            password.setEnabled(true);
+                            conf_password.setEnabled(true);
+                            Toast.makeText(RegisterActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }.start();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        new CountDownTimer(2500, 4000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                            }
+                            @Override
+                            public void onFinish() {
+                                reg.setVisibility(View.VISIBLE);
+                                loading_screen.setVisibility(View.GONE);
+                                loading.setVisibility(View.GONE);
+                                loading_screen.setAnimation(fade_out);
+                                name.setEnabled(true);
+                                phone.setEnabled(true);
+                                password.setEnabled(true);
+                                conf_password.setEnabled(true);
+                                Toast.makeText(RegisterActivity.this, "Failed to Login", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        }.start();
+                    }
+                }){
+            @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("email",email_z);
                 params.put("phone",phone_z);
+                params.put("password",pass_z);
                 return params;
             }
         };
@@ -236,6 +500,9 @@ public class RegisterActivity extends AppCompatActivity {
         RequestQueue requestQueus = Volley.newRequestQueue(this);
         requestQueus.add(stringRequest);
     }
+
+
+
 
 
     public AlertDialog.Builder duplicateFound(Context c) {
@@ -249,6 +516,15 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Animation fade_out = AnimationUtils.loadAnimation(getBaseContext(),R.anim.fade_out);
+                reg.setVisibility(View.VISIBLE);
+                loading_screen.setVisibility(View.GONE);
+                loading.setVisibility(View.GONE);
+                loading_screen.setAnimation(fade_out);
+                name.setEnabled(true);
+                phone.setEnabled(true);
+                password.setEnabled(true);
+                conf_password.setEnabled(true);
                 phone.setText("");
                 password.setText("");
                 conf_password.setText("");

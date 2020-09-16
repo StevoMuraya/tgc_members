@@ -1,14 +1,14 @@
-<?php 
+<?php
 
 require "password.php";
-if ($_SERVER['REQUEST_METHOD'] =='GET'){
-	$name				= filter_var($_GET['name'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-	$phone				= filter_var($_GET['phone'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-	$password			= filter_var($_GET['password'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-	
+if ($_SERVER['REQUEST_METHOD'] =='POST'){
+	$name				= filter_var($_POST['name'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+	$phone				= filter_var($_POST['phone'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+	$password			= filter_var($_POST['password'],FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+
 	require_once('config.php');
 
-	$CODE = $name.' '.$phone; 
+	$CODE = $name.' '.$phone;
 	$encrypted_password = password_hash($password, PASSWORD_DEFAULT);
 	$hashedQRCode = password_hash($CODE, PASSWORD_DEFAULT);
 
@@ -23,5 +23,5 @@ if ($_SERVER['REQUEST_METHOD'] =='GET'){
 	mysqli_close($db_handle);
 }else{
 	echo 'Error in capturing data';
-} 
+}
 ?>
